@@ -1,4 +1,3 @@
-import cachetools.func
 import pandas as pd
 import plotly.express as px
 import streamlit as st
@@ -6,7 +5,7 @@ import streamlit as st
 from create_statewise_dfs import get_statewise_datasets
 
 
-@cachetools.func.ttl_cache(maxsize=100, ttl=3600)
+@st.cache_data
 def get_cached_states_data():
     return get_statewise_datasets()
 
@@ -17,9 +16,7 @@ states_data = get_cached_states_data()
 st.title("Analysis of Commodity Data")
 
 state = st.selectbox("Select State", list(states_data.keys()))
-commodity = st.selectbox(
-    "Select Commodity", states_data[state].columns
-)  # ... (your options)
+commodity = st.selectbox("Select Commodity", ["Onion", "Other"])  # ... (your options)
 plot_type = st.selectbox("Plot Type", ["scatter", "bar"])
 
 scatter_dims = []
@@ -71,4 +68,4 @@ else:
     st.write("Unsupported plot type!")
 
 # Display summary statistics (optional)
-st.dataframe(req_df[req_df.commodity == commodity].describe())
+# st.dataframe(req_df[req_df.commodity == commodity].describe())
