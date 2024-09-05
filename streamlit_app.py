@@ -2,7 +2,7 @@ import pandas as pd
 import plotly.express as px
 import streamlit as st
 
-from create_statewise_dfs import get_statewise_datasets
+from src.create_statewise_dfs import get_statewise_datasets
 
 
 @st.cache_data
