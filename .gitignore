@@ -1,2 +1,3 @@
 .venv/
 sihvenv/
+__pycache__/
