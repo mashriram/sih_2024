@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-SOURCE_DIR = os.environ.get("DATA_SOURCE_DIR", "../sih_2024_data_source/")
+SOURCE_DIR = os.environ.get("DATA_SOURCE_DIR", "data/")
 STATE_WISE_DATA = SOURCE_DIR + "statewise_results/Onion"
 
 
