@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 SOURCE_DIR = os.environ.get("DATA_SOURCE_DIR", "data/")
-STATE_WISE_DATA = SOURCE_DIR + "statewise_results/Onion"
+STATE_WISE_DATA = "data/statewise_results/Onion"
 
 
 state_datasets: dict[str, pd.DataFrame] = dict()
