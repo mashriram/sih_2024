@@ -110,7 +110,7 @@ elif plot_type == "stacked line":
 elif plot_type == "stacked bar":
     chart.create_stacked_bar_chart(req_df, stacked_by_dims, stacked_col_dim)
 elif plot_type == "scatter single axis":
-    chart.create_scatter_single_axis(req_df)
+    chart.create_scatter_single_axis(req_df, commodity)
 else:
     st.write("Unsupported plot type!")
 

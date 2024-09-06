@@ -1,6 +1,5 @@
-from streamlit_echarts import st_echarts
 import pandas as pd
-from streamlit_echarts import JsCode
+from streamlit_echarts import JsCode, st_echarts
 
 
 def create_stacked_line_chart(df, by, column):
@@ -97,7 +96,7 @@ def create_stacked_bar_chart(df, by: str, column):
     st_echarts(options=options, height="500px")
 
 
-def create_scatter_single_axis(df):
+def create_scatter_single_axis(df, commodity):
     years = sorted(list(df["year"].astype(str).unique()))
     months = [
         "Jan",
@@ -113,7 +112,7 @@ def create_scatter_single_axis(df):
         "Nov",
         "Dec",
     ]
-
+    df = df.query(f"commodity == '{commodity}'")
     df["date"] = df["date"].str.replace(" ", "-")
     # Convert the 'date' column to datetime format
     df["date"] = pd.to_datetime(df["date"])
