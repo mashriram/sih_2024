@@ -115,7 +115,7 @@ def create_scatter_single_axis(df, commodity):
     df = df.query(f"commodity == '{commodity}'")
     df["date"] = df["date"].str.replace(" ", "-")
     # Convert the 'date' column to datetime format
-    df["date"] = pd.to_datetime(df["date"])
+    df["date"] = pd.to_datetime(df["date"], format="mixed")
 
     # Add a new column for the day of the week
     df["day_of_week"] = df["date"].dt.day_name()
