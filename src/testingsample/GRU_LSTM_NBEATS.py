@@ -7,6 +7,7 @@ from sklearn.preprocessing import MinMaxScaler
 from tensorflow.keras.layers import GRU, LSTM, Dense, Input
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.optimizers import Adam
+import plotly.express as px
 
 
 # Load and preprocess data
@@ -30,19 +31,16 @@ def load_and_preprocess_data(file_path):
 
 
 df1 = load_and_preprocess_data("response_01_Sep_2014_to_01_Sep_2015.csv")
-df2 = load_and_preprocess_data("response_01_Sep_2017_to_01_Sep_2018.csv")
+df2 = load_and_preprocess_data("response_01_Sep_2015_to_01_Sep_2016.csv")
+
+df3 = load_and_preprocess_data("response_01_Sep_2016_to_01_Sep_2017.csv")
+df4 = load_and_preprocess_data("response_01_Sep_2017_to_01_Sep_2018.csv")
+df5 = load_and_preprocess_data("response_01_Sep_2018_to_01_Sep_2019.csv")
 
 # Combine datasets
-df = pd.concat([df1, df2]).sort_values("date")
+df = pd.concat([df1, df2, df3, df4, df5]).sort_values("date")
 
-# Normalize data
-scaler = MinMaxScaler()
-df["modal_price_scaled"] = scaler.fit_transform(df[["modal_price"]])
-
-
-# Combine datasets
-df = pd.concat([df1, df2]).sort_values("date")
-
+df = df.groupby(["date"])["modal_price"].agg("mean").reset_index()
 # Normalize data
 scaler = MinMaxScaler()
 df["modal_price_scaled"] = scaler.fit_transform(df[["modal_price"]])
@@ -141,9 +139,6 @@ if isinstance(output, tuple):
 else:
     nbeats_pred = output
 
-# Detach gradient and convert to NumPy
-type(nbeats_pred)
-# nbeats_pred = nbeats_pred.detach().cpu().numpy()
 
 # Ensure nbeats_pred has the correct shape
 if len(nbeats_pred.shape) == 3:
@@ -160,14 +155,10 @@ lstm_pred = lstm_model.predict(X_test_reshaped)
 
 X_test_tensor = torch.FloatTensor(X_test).to(device)
 X_test_tensor = X_test_tensor.view(-1, seq_length, 1).to(device)
-nbeats_pred = nbeats_model(X_test_tensor)[0]
-print(type(nbeats_pred))
-# nbeats_pred = nbeats_pred.detach().cpu().numpy()
 
 # Inverse transform predictions
 gru_pred = scaler.inverse_transform(gru_pred)
 lstm_pred = scaler.inverse_transform(lstm_pred)
-nbeats_pred = scaler.inverse_transform(nbeats_pred)
 y_test_original = scaler.inverse_transform(y_test.reshape(-1, 1))
 
 
@@ -191,6 +182,6 @@ gru_metrics = calculate_metrics(y_test_original, gru_pred)
 lstm_metrics = calculate_metrics(y_test_original, lstm_pred)
 nbeats_metrics = calculate_metrics(y_test_original, nbeats_pred)
 
-print("GRU Metrics (MSE, MAE, RMSE, F1):", gru_metrics)
-print("LSTM Metrics (MSE, MAE, RMSE, F1):", lstm_metrics)
-print("N-BEATS Metrics (MSE, MAE, RMSE, F1):", nbeats_metrics)
+print("GRU Metrics (MSE, MAE, RMSE, F1,R2):", gru_metrics)
+print("LSTM Metrics (MSE, MAE, RMSE, F1,R2):", lstm_metrics)
+print("N-BEATS Metrics (MSE, MAE, RMSE, F1,R2):", nbeats_metrics)
