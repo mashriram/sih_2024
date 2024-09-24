@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import plotly.express as px
 import torch
 from nbeats_pytorch.model import NBeatsNet
 from sklearn.metrics import f1_score, mean_absolute_error, mean_squared_error, r2_score
@@ -7,7 +8,6 @@ from sklearn.preprocessing import MinMaxScaler
 from tensorflow.keras.layers import GRU, LSTM, Dense, Input
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.optimizers import Adam
-import plotly.express as px
 
 
 # Load and preprocess data
@@ -185,3 +185,13 @@ nbeats_metrics = calculate_metrics(y_test_original, nbeats_pred)
 print("GRU Metrics (MSE, MAE, RMSE, F1,R2):", gru_metrics)
 print("LSTM Metrics (MSE, MAE, RMSE, F1,R2):", lstm_metrics)
 print("N-BEATS Metrics (MSE, MAE, RMSE, F1,R2):", nbeats_metrics)
+
+metrics_df = pd.DataFrame(
+    {
+        "GRU Metrics": gru_metrics,
+        "LSTM Metrics": lstm_metrics,
+        "N-BEATS Metrics": nbeats_metrics,
+    }
+)
+metrics_df.rename(index={0: "MSE", 1: "MAE", 2: "RMSE", 3: "F1", 4: "R2"}, inplace=True)
+print(metrics_df)
