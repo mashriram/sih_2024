@@ -5,7 +5,7 @@ import plotly.express as px
 import streamlit as st
 
 # from src.create_statewise_dfs import get_statewise_datasets
-import src.chart_renderers as chart
+import utils.chart_renderers as chart
 
 DATA_PATH = "./data/5_yr_data"
 

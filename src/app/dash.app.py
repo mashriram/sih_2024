@@ -1,7 +1,7 @@
 import plotly.express as px
 from dash import Dash, Input, Output, dcc, dependencies, html
 
-from create_statewise_dfs import get_statewise_datasets
+from utils.create_statewise_dfs import get_statewise_datasets
 
 states_data: dict | None = None
 app = Dash(__name__)
