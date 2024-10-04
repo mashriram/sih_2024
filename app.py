@@ -4,7 +4,7 @@ import pandas as pd
 import plotly.express as px
 import streamlit as st
 
-import utils.chart_renderers as chart
+import src.utils.chart_renderers as chart
 
 DATA_PATH = "./data/5_yr_data"
 
