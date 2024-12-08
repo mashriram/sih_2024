@@ -1,5 +1,5 @@
 # %%
-DATA_SOURCE = "../../sih_2024_data_source/statewise_results/"
+DATA_SOURCE = "/home/ubuntu/sih_2024_project/sih_2024_data_source/statewise_results/"
 
 # %%
 import pandas as pd
@@ -71,8 +71,9 @@ def train_and_forecast(df_train, df_test):
 
     # Darts workflow
     # Convert pandas DataFrame to Darts TimeSeries
+    df = pd.concat([df_train, df_test], axis=1)
     series = TimeSeries.from_dataframe(
-        df_train, "ds", "y", fill_missing_dates=True, freq=None
+        df, "ds", "y", fill_missing_dates=True, freq=None
     )
 
     # Create and train models
@@ -169,15 +170,15 @@ for commodity in os.listdir(DATA_SOURCE):
         results.to_csv(f"./model_results/{commodity}/results.csv")
         error_results = pd.DataFrame(scores)
         error_results.to_csv(f"./model_results/{commodity}/errors.csv")
-        ers[state] = {"results": results, "error_results": error_results}
-        px.line(
-            results,
-            x=results.index,
-            y=[
-                "y",
-                "nhits",
-            ],
-        )
+        # ers[state] = {"results": results, "error_results": error_results}
+        # px.line(
+        #     results,
+        #     x=results.index,
+        #     y=[
+        #         "y",
+        #         "nhits",
+        #     ],
+        # )
 
 
 # %%
